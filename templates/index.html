@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>weather</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="shortcut icon" href="favicon-32x32.png" />
+</head>
+<body>
+    <nav style="background: #337ab7; color: white">
+        <h1 class="col-md-3 text-center">weather</h1>
+    </nav>
+    <br />
+    <br />
+    <center>
+        <form>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" />
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <svg width="50" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                          </svg>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </center>
+    <div>
+        {% if data %}
+            <h1>{{location}}</h1>
+            <h4>Humidity: {{data.humidity}}</h4>
+            <h4>Pressure: {{data.pressure}}</h4>
+            <h4>Coordinate: {{data.coordinate}}</h4>
+            <h4>Temperature: {{data.temp}}&#176; F</h4>
+        {% endif %}
+    </div>
+
+    <script>
+        const form = document.querySelector("form");
+
+        form.onsubmit = (event) => {
+            event.preventDefault();
+            
+            const location = event.target.querySelector('input').value;
+            document.location.href = `${new URL(document.location.href).origin}/weather?location=${location}`;
+        }
+    </script>
+</body>
+</html>
