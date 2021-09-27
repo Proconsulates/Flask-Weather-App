@@ -3,14 +3,16 @@ from flask import Flask, render_template, request, redirect
 import json
 import math
 import urllib.request
-import socket
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 app = Flask(__name__)
   
 @app.route('/', methods=['GET'])
 def index():
     ip = urllib.request.urlopen('https://ipv4.icanhazip.com/')
-    req = urllib.request.urlopen('https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=at_FTf7sfz2mDkrTJtupEBqh4VaY0MQB&ipAddress=' + ip.read().decode('utf8'))
+    req = urllib.request.urlopen('https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=' + os.getenv("GEOLOCATION_API_KEY") + '&ipAddress=' + ip.read().decode('utf8'))
 
     return redirect(location="/weather?location=" + json.loads(str(str(req.read())).replace('b', '').replace("'", ''))['location']['city'])
 
@@ -19,11 +21,9 @@ def weather_route():
     location = request.args.get('location')
     if location == None: 
         return '<h1>Please specify a location!</h1><br/><a href="/">Home Page</a>'
-    
-    api = '2f758f104006786fe5a7505e33bc8f6e'
   
     try:
-        source = urllib.request.urlopen('http://api.openweathermap.org/data/2.5/weather?q=' + location + '&appid=' + api).read()
+        source = urllib.request.urlopen('http://api.openweathermap.org/data/2.5/weather?q=' + location + '&appid=' + os.getenv("WEATHER_API_KEY")).read()
     
         list_of_data = json.loads(source)
 
@@ -39,7 +39,8 @@ def weather_route():
         }
         
         return render_template('index.html', data=data, location=location)
-    except: return '<h1>Invalid Location</h1><br/><a href="/">Home Page</a>'
+    except: 
+        return '<script>alert("Invalid Location");document.location.href=`${new URL(document.location.href).origin}/`;</script>'
   
   
 if __name__ == '__main__':
