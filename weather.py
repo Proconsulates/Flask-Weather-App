@@ -11,11 +11,7 @@ app = Flask(__name__)
   
 @app.route('/', methods=['GET'])
 def index():
-    ip = urllib.request.urlopen('https://ipv4.icanhazip.com/')
-    print(request.remote_addr)
-    req = urllib.request.urlopen('https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=' + os.getenv("GEOLOCATION_API_KEY") + '&ipAddress=' + ip.read().decode('utf8'))
-
-    return redirect(location="/weather?location=" + json.loads(str(str(req.read())).replace('b', '').replace("'", ''))['location']['city'])
+    return render_template('home.html')
 
 @app.route('/weather', methods=['GET'])
 def weather_route():
@@ -43,12 +39,8 @@ def weather_route():
     except: 
         return '<script>alert("Invalid Location");document.location.href=`${new URL(document.location.href).origin}/`;</script>'
   
-  
 if __name__ == '__main__':
     app.run(debug = True)
-
-
-
 
 
 """

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather app</title>
+</head>
+<body>
+    <script>
+        const callback = (data) => document.location.href = `${new URL(document.location.href).origin}/weather?location=${data.city}`;
+    </script>
+    <script src="https://geolocation-db.com/jsonp"></script>
+</body>
+</html>
